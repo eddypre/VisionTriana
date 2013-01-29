@@ -39,11 +39,12 @@ def transformar():
 			b = tupla[1]
 			c = tupla[2]
 			
-			newA = 44 
-			newB = 44
-			newC = 44
-			
+			prom = int((a+b+c)/3)
+			newTupla = (prom,prom,prom)
+			im.putpixel((x, y), newTupla)			
+
 			print tupla, "--", a,",",b,",",c
+	im.save('meh.jpg')
 
 if __name__ == "__main__":
 	main()
