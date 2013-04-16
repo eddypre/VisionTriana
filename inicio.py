@@ -13,8 +13,9 @@ import random
 from sys import argv
 import Image, ImageTk
 import Tkinter
+from PIL import Image, ImageDraw,ImageFont
 
-def main():  	
+def main():		
 	
 	acumulado1 = 0
 	acumulado2 = 0
@@ -278,14 +279,16 @@ def bfs(im, origen, color):
 
 def formas():
 
-	im = Image.open("meh3.jpg") #Imagen con bordes y binarizada
-	width, height = im.size
+	imagen = Image.open("meh3.jpg") #Imagen con bordes y binarizada
+	draw = ImageDraw.Draw(imagen)	
+	fuente = ImageFont.truetype('/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-C.ttf',10)
+	width, height = imagen.size
 	total = width * height
 	porcentajes = []
 	centro = []
 	corr = 0 ##Solo para corroborar porcentajes
 	conteo = 0
-	pixel = im.load()
+	pixel = imagen.load()
 	temp = []
 	colorsR = [] #Para guardar colores R
 	colorsG = [] #Para guardar colores G
@@ -296,7 +299,7 @@ def formas():
       			if pixel[i, j] == (0, 0, 0):	#Ir pintando pixeles (negros obviamente)
 				r, g, b = random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)  #Asignando pixeles random
 				
-				n, x, y = bfs(im,(i,j),(r,g,b))				
+				n, x, y = bfs(imagen,(i,j),(r,g,b))				
 				ptemp = float(n)/float(total) * 100.0	#Obteniendo porcentajes
 				if ptemp > 0.2:
 					  centro.append((sum(x) / len(x), sum(y) / len(y)))	  #Localizando centros
@@ -319,8 +322,16 @@ def formas():
 			#Aqui va lo de las tags, proximamente en Tkinter o Pygame
     		else:
       			pixel[centro[i]] = (0, 255, 0)	
+			draw.text((centro[i][0], centro[i][1]), 'C', fill=(0,0,255), font=fuente)
+			draw.ellipse((centro[i][0], centro[i][1], 2000, 900), fill=(0, 0, 0))
+			print "Centro :) ", centro[i]
+			print pixel[centro[i]]
+			print i
+			print centro
 
-	im.save('meh4.jpg')	#Imagen definitiva
+			#imagen.text((i[0]+aux+3, i[1]), ('Tumor', fill=(0,0,255), font=fuente)
+
+	imagen.save('meh4.jpg')	#Imagen definitiva
   	conteo = 1
 	
 	#for c in centro:
